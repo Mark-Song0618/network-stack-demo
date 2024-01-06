@@ -1,0 +1,201 @@
+Node: 0 {
+Nic: 0 {
+        MAC: 0.0.0.0.0.0
+        IP: 0.0.0.1
+        Mask: 128.0.0.0
+}
+}
+Node: 1 {
+Nic: 0 {
+        MAC: 0.0.0.1.0.0
+        IP: 0.0.0.2
+        Mask: 128.0.0.0
+}
+}
+Node: 2 {
+Nic: 0 {
+        MAC: 0.0.0.2.0.0
+        IP: 0.0.0.3
+        Mask: 128.0.0.0
+}
+Nic: 1 {
+        MAC: 0.0.0.2.0.1
+        IP: 128.0.0.1
+        Mask: 128.0.0.0
+}
+Nic: 2 {
+        MAC: 0.0.0.2.0.2
+}
+}
+Node: 3 {
+Nic: 0 {
+        MAC: 0.0.0.3.0.0
+        IP: 128.0.0.2
+        Mask: 128.0.0.0
+}
+}
+Node: 4 {
+Nic: 0 {
+        MAC: 0.0.0.4.0.0
+}
+Nic: 1 {
+        MAC: 0.0.0.4.0.1
+}
+}
+Node: 5 {
+Nic: 0 {
+        MAC: 0.0.0.5.0.0
+}
+Nic: 1 {
+        MAC: 0.0.0.5.0.1
+}
+}
+Node: 6 {
+Nic: 0 {
+        MAC: 0.0.0.6.0.0
+}
+Nic: 1 {
+        MAC: 0.0.0.6.0.1
+}
+}
+Node: 7 {
+Nic: 0 {
+        MAC: 0.0.0.7.0.0
+}
+}
+EtherNet: 0 {
+        Node: 0 nic: 0
+        Node: 1 nic: 0
+        Node: 2 nic: 0
+}
+EtherNet: 1 {
+        Node: 2 nic: 1
+        Node: 3 nic: 0
+}
+EtherNet: 2 {
+        Node: 2 nic: 2
+        Node: 4 nic: 0
+}
+EtherNet: 3 {
+        Node: 4 nic: 1
+        Node: 5 nic: 0
+}
+EtherNet: 4 {
+        Node: 5 nic: 1
+        Node: 6 nic: 0
+}
+EtherNet: 5 {
+        Node: 6 nic: 1
+        Node: 7 nic: 0
+}
+
+##LAYER5
+Node 0 send msg:
+        hello, Mark1
+to :
+        0.0.0.2
+
+
+##LAYER3
+demote to layer2 for direct forwarding
+        From Node: 0 to: 0.0.0.2
+
+
+##LAYER1
+
+##LAYER2
+Node: 1 Nic: 0 received:1518 bytes
+
+send packet to:0.0.0.2
+Mac not resolved, send arp request
+
+
+##LAYER2
+
+##LAYER5
+Node 0 send msg:
+        hello, Mark3
+to :
+        128.0.0.2
+
+Node: 1 process arp request of 0.0.0.2 with Mac: 0.0.0.1.0.0
+
+
+
+##LAYER3
+##LAYER1demote to layer2 for gateway forwarding
+        From Node: 0 through 0.0.0.3 to: 128.0.0.2
+
+
+
+Node: 0 Nic: 0 received:1518 bytes
+
+##LAYER2
+
+send packet to:0.0.0.3
+Mac not resolved, send arp request
+
+##LAYER2
+Node: 0 process arp reply£¬ send pending packet of 0.0.0.2
+
+
+##LAYER2
+Node: 0 process arp reply£¬ send pending packet of 0.0.0.2
+
+
+##LAYER1
+Node: 2 Nic: 0 received:1518 bytes
+
+
+##LAYER1
+Node: 1 Nic: 0 received:1518 bytes
+
+
+##LAYER1
+Node: 2 Nic: 0 received:1518 bytes
+
+
+##LAYER1
+Node: 1 Nic: 0 received:1518 bytes
+
+
+##LAYER5
+Node :1 received msg:
+        hello, Mark1
+from :
+        1.0.0.127
+
+
+##LAYER1
+Node: 2 Nic: 0 received:1518 bytes
+
+
+##LAYER2
+Node: 2 process arp request of 0.0.0.3 with Mac: 0.0.0.2.0.0
+
+
+##LAYER1
+Node: 0 Nic: 0 received:1518 bytes
+
+
+##LAYER1
+Node: 1 Nic: 0 received:1518 bytes
+
+
+##LAYER5
+Node :1 received msg:
+        hello, Mark3
+from :
+        0.0.0.0
+
+
+##LAYER1
+Node: 2 Nic: 0 received:1518 bytes
+
+
+##LAYER1
+Node: 1 Nic: 0 received:1518 bytes
+
+
+##LAYER1
+Node: 2 Nic: 0 received:1518 bytes
